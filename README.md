@@ -129,11 +129,14 @@ output from truly random numbers.  Because of this, the scheme should never be
 used by computers to encrypt messages, since more secure schemes exist.
 
 To test if a key stream is not random, count the number of black aces.  There
-are about 4.2$ more black aces in the generated key stream vs random.
+are about 4.2% more black aces in the generated key stream vs random.
 
-A good cryptanalist should be able to recover useful information given enough
-ciphertext, but it is unclear if this can result in a full break of the scheme,
-enabling the attacker to recover the deck's state.
+However, to get a clear answer, the key stream needs to be fairly long.  The
+first 100 cards could easily have no black aces.  To have confidence, we need
+enough cards for the average number of black aces to converge to within a
+couple of percent with reasonable probability.  If the user only uses say 1,000
+total cards from this scheme, we expect only 1.6 too many black aces, clearly
+in the noise.
 
 ### Brute force guessing
 
@@ -149,7 +152,8 @@ attacker recover a random key for under $1M.
 
 Most tests pass, such as birthday collisions, which is somewhat surprising.
 However, STS Monobit, the NIST test for number of 1's vs 0's, fails as
-expected.
+expected.  Several other tests fail as well.  See dieharder.results to see the
+results of tests I ran.
 
 ### Letter probabilities
 
@@ -189,13 +193,12 @@ RK 3.84%
 ### Next letter probabilities
 
 The following table shows how many 2-letter combinations occurred in a sample
-of of 199,999,999.  The black ace repeating is the largest, with 318523 vs an
+of of 200,000,000.  The black ace repeating is the largest, with 318523 vs an
 average of 295,858, which is 7.7% higher than average.
 
-These probabilities could be used, for example, to verify that someone is using
-this encryption scheme when the cryptanalist knows the plaintext and
-ciphertext, and can trivially extract the keystream.
-
+For decks that only ever generate 1,000 key stream cards, it is unclear to me
+how to make use of these biases.  The would have little impact on my attempt to
+determine that a 1000-letter key stream is not random.
 
 ```
 BA: 318523, 308315, 306520, 306452, 306844, 307649, 306390, 307361, 307988, 308267, 307841, 306892, 307812, 307143, 306600, 306611, 307440, 307026, 308489, 307217, 307029, 306868, 307754, 306568, 306811, 308376
@@ -230,15 +233,16 @@ RK: 307174, 269049, 295986, 295686, 296559, 296283, 296208, 296067, 296072, 2957
 
 Given say 1KiB of key stream values, can a cryptanalist determine the deck
 order, and thus predict all future output?  Unlike LFSRs, this scheme does not
-appear to have a simple algegraic structure, but many proposed crypto schemes
-where broken because of linear structure the author did not see.
+appear to have a simple algebraic structure, but many proposed crypto schemes
+were broken via advanced techniques such as lattice cryptanalysis.
 
-I believe the problem of recovering the card state from past outputs is
-difficult.  The current position is not known since the attacker does not know
-when the black ace is in the current position, causing the current position to
-increment without outputing a card.  Even a correct guess of half of the card
-positions seems to lead nowhere, as unknown cards scramble the known cards
-quickly, more rapidly than the case where two known cards reveal the position
-of an unknown card.  After 26 to 260 cards are output, the attacker no longer
-has statistically useful information about card positions, depending on how we
-define "useful".
+I hypothesize the problem of recovering the card state from less than 1000 past
+outputs is difficult.  The current position is not known since the attacker
+does not know when the black ace is in the current position, causing the
+current position to increment without outputting a card.  Even a correct guess
+of half of the card positions seems to lead nowhere, as unknown cards scramble
+the known cards quickly, more rapidly than the case where two known cards
+reveal the position of an unknown card.  After 26 to 260 cards are output, the
+attacker no longer has statistically useful information about card positions,
+depending on how we define "useful".  After 26 cards, no card position is known
+with better than a few percent probability.
