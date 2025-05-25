@@ -21,7 +21,7 @@ clearly preferred.
 This scheme should also never be used for computers to communicate, since far
 more secure schemes exist, e.g. AEAD schemes such as AES-GCM.
 
-That leaves the case where a person does not what to get caught with a
+That leaves the case where a person does not want to get caught with a
 one-time-pad, as this would be incriminating.
 
 ## Generation of the one-time-pad data
@@ -33,10 +33,10 @@ before hand, assuming the paper where they are written can be securely stored.
 
 ### Encryption
 
-Simply add the letter of plaintext to the corresponding letter from the
-one-time-pad, wrapping around such that Z + A = A, and Y + C = B.  Be sure to
-use the letter from the one-time-pad only once, ever, or security for the
-encrypted messages is lost.
+Assign A = 0, B = 1, ... , Z = 25.  Simply add the values of the letter of
+plaintext to the corresponding letter from the one-time-pad, wrapping around
+such that Z + A = A, and Y + C = B.  Be sure to use the letter from the
+one-time-pad only once, ever, or security for the encrypted messages is lost.
 
 ```
 One-time-pad: IVEH
@@ -67,8 +67,8 @@ turning the current position card over, and exposing the card 1 to the right,
 or if at the end, the first card in the other row.
 
 The "value" of a card is 0 for the black ace, 12 for the black king, 13 for the
-red ace, and 25 for the red king.  The value of a card is added to the position
-of a card to find its "target" card.  For example, if the current card is 4th
+red ace, and 25 for the red king.  The value of a card is added to the current
+position to find its "target" card.  For example, if the current card is 4th
 from the bottom left, and the card in this position is a red 2, then the target
 is in the 5th position on the upper row.
 
@@ -76,28 +76,39 @@ To produce a card in the key stream:
 
 1) If the card in the current position is the black ace, increment the position
 and repeats step 1.
-2) Otherwise, flip over the target card of the first card to find the second card.
+2) Flip over the target card of the first card to find the second card.
 3) Flip over the target card of the second card to find the third card, which
-can be the same as the first card.
+can be the same as the first card, if the second card is the black ace.
 4) Add the 3rd card to the output key stream.
 5) If the 3rd card is not the same as the first, then "rotate" the 3 face-up cards.
 
 To rotate 3 cards, the first card moves to the third card's position, the
 second card moves to the first card's position, and the third card moves to the
 second card's position.  For example, if the current position is 4th from the
-bottom left, we might see:
+bottom left (which has value 3), we might see:
 
 ```
-XXX XXX XXX XXX XXX XXX XXX XXX XXX B8  XXX XXX XXX
-XXX XXX XXX R10 XXX XXX XXX RJ  XXX XXX XXX XXX XXX
+XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
+B8  XXX XXX R10 XXX XXX XXX XXX XXX XXX XXX RJ  XXX
 ```
+
+Initially we just have R10 showing, but adding 13 to account for the 'R' in R10
+takes us to the upper row in the 4th position, just above the current positoin.
+Then we count right by 10.  We reach 9 at the upper right card, so we overflow
+to the lower left position.  Alternatively, you can see that R10 means 3
+positions to the left of the current position.  You'll be doing this rapidly
+after just a few minutes.
+
+The second card is found by adding the value of B8, which is just 8, to the
+current position, which is position 3 + 8 = 11, second from the last in he
+bottom row.
 
 The rotation moves R10 to the space held by RJ, B8 moves to the space held by
 R10, and RJ moves to the space held by R8.
 
 ```
-XXX XXX XXX XXX XXX XXX XXX XXX XXX BJ XXX XXX XXX
-XXX XXX XXX B8  XXX XXX XXX R10 XXX XXX XXX XXX XXX
+XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
+RJ  XXX XXX B8  XXX XXX XXX XXX XXX XXX XXX R10 XXX
 ```
 
 Note that this rotation is invertible, ensuring we do not lose entropy in the
@@ -109,6 +120,21 @@ History has shown that most proposed cryptographic schemes are easily broken.
 Only extensive cryptanalysis by experts can begin to offer confidence in a
 scheme, and this new scheme currently has none.
 
+That said, here's a start, from my own cryptanalysis.
+
+### Distinguishing vs random stream
+
+This scheme is already "broken", in that it is trivial to distinguish the
+output from truly random numbers.  Because of this, the scheme should never be
+used by computers to encrypt messages, since more secure schemes exist.
+
+To test if a key stream is not random, count the number of black aces.  There
+are about 4.2$ more black aces in the generated key stream vs random.
+
+A good cryptanalist should be able to recover useful information given enough
+ciphertext, but it is unclear if this can result in a full break of the scheme,
+enabling the attacker to recover the deck's state.
+
 ### Brute force guessing
 
 There are only 2^88 possible ways to shuffle 26 cards (26 factorial).  This is
@@ -118,14 +144,6 @@ considered secure vs classical computers, and double that vs quantum computers.
 However, it is _close_ to being secure.  It would be surprising to see an
 attacker recover a random key for under $1M.
 
-### Distinguishing vs random stream
-
-This scheme is already "broken", in that it is trivial to distinguish the
-output from truely random numbers.  Because of this, the scheme should never be
-used by computers to encrypt messages, since more secure schemes exist.
-
-To test if a key stream is not random, count the number of black acess.  There
-are about 4.2$ more black aces in the generated key stream vs random.
 
 ### Dieharder results
 
@@ -170,8 +188,8 @@ RK 3.84%
 
 ### Next letter probabilities
 
-The following table shows how many 2-letter combinations occured in a sample of
-of 199,999,999.  The black ace repeating is the largest, with 318523 vs an
+The following table shows how many 2-letter combinations occurred in a sample
+of of 199,999,999.  The black ace repeating is the largest, with 318523 vs an
 average of 295,858, which is 7.7% higher than average.
 
 These probabilities could be used, for example, to verify that someone is using
