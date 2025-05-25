@@ -1,0 +1,113 @@
+class Deck(self, len: u16) {
+  self.len = len
+  self.cards = arrayof(u16)
+  for i in range(len) {
+    self.cards.append(i)
+  }
+  self.pos = 0u16
+
+  func shuffle(self) {
+    for i in range(self.len) {
+      index = i + reveal(randRange(self.len - i))
+      prevCard = self.cards[i]
+      self.cards[i] = self.cards[index]
+      self.cards[index] = prevCard
+    }
+  }
+
+  func incPos(self) {
+    self.pos += 1
+    if self.pos >= <self.pos>self.len {
+      self.pos -= <self.pos>self.len
+    }
+  }
+
+  func addPos(self, card) {
+    pos = self.pos + card
+    if pos >= <pos>self.len {
+      pos -= <pos>self.len
+    }
+    return pos
+  }
+
+  // Generate a random card from the deck.  This is meant to be computationally
+  // indistiguishable from random, making this a CPRNG.
+  func randCard(self) -> u16 {
+    do {
+      card1 = self.cards[self.pos]
+      pos1 = self.addPos(card1)
+      card2 = self.cards[pos1]
+      pos2 = self.addPos(card2)
+      card3 = self.cards[pos2]
+    } while self.pos == pos1 {
+      self.incPos()
+    }
+    if self.pos != pos2 {
+      self.cards[self.pos] = card2
+      self.cards[pos1] = card3
+      self.cards[pos2] = card1
+    }
+    self.incPos()
+    return card3
+  }
+}
+
+func cardName(card) {
+  color = card / 13 == 1? "R" : "B"
+  cards = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+  return color + cards[card % 13u16]
+}
+
+/*
+unittest genRandCardsForDieharder {
+  bits = 5
+  deck = Deck(1u16 << bits)
+  deck.shuffle()
+  println "type: d"
+  numVals = 1_000_000_000
+  println "count:", numVals
+  println "numbit: 32"  // Dieharder only accepts 32 as the number of bits.
+  randVal = 0
+  randBits = 0
+  for i in range(numVals) {
+    while randBits < 32 {
+      randVal <<= bits
+      card = deck.randCard()
+      randVal |= <randVal>card
+      randBits += bits
+    }
+    println randVal >> (randBits - 32)
+    randBits -= 32
+    randVal &= (1 << randBits) - 1
+  }
+}
+*/
+
+unittest computeNextCardProbabilities {
+  numCards = 26u16
+  deck = Deck(numCards)
+  deck.shuffle()
+  numVals = 200_000_000
+  randVal = 0
+  countsTable = arrayof(u32)
+  countsTable.resize(numCards)
+  hitsTable = arrayof([u32])
+  for j in range(numCards) {
+    subArray = [0u32]
+    subArray.resize(numCards)
+    hitsTable.append(subArray)
+  }
+  prevCard = 1000u16
+  for i in range(numVals) {
+    card = deck.randCard()
+    countsTable[card] += 1
+    if prevCard != 1000u16 {
+      hitsTable[prevCard][card] += 1
+    }
+    prevCard = card
+  }
+  for row in range(numCards) {
+    println cardName(row), " ", <f32>countsTable[row] / <f32>(numVals - 1)
+  }
+  println hitsTable
+}
