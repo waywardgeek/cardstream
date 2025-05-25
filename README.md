@@ -10,6 +10,18 @@ are slightly more 0's in the output than 1's for example.  However, for use
 over a short set of short messages, the goal of this system is to leak too few
 bits of information to be of use to an attacker.
 
+## Motivation
+
+Bruce Schneier's [Solitaire](https://en.wikipedia.org/wiki/Solitaire_(cipher))
+is cool, but:
+
+1) Its output key stream is not very random compared to true random.
+2) We're doing a lot of work per output card.
+
+The idea here isn't to see if we can fix the output to be indistiguishible from
+random.  Instead, the idea is to see how efficient we can make the system,
+while having enough randomness to be useful for encrypting short messages.
+
 ## When this _might_ be useful
 
 When a one-time-pad is practical, it should be used rather than this scheme.
