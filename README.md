@@ -302,10 +302,8 @@ Agree on how to put down the cards.  I put the cards face-down in my hand, and
 then place 13 cards face-up from the top of the deck from left to right,
 followed by another row below that, left to right.
 
-I start with the current position as the lower left card, in position 0/
-Position 12 is the bottom right, position 13 is the upper left, and position 25
-is the upper right.  I find it more natural to place the second row below the
-first.
+I start with the current position as the lower left card.  I find it more
+natural to place the second row below the first.
 
 Always compute target cards relative to the current position.  With a black 4,
 I count one, two, three, four, starting with the current position, and moving
