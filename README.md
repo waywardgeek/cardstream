@@ -340,6 +340,16 @@ quickly.  I encode the current position by having that card face down.
 ![My daughter's cat Slinky.](images/slinky.jpg)
 
 
+## Deriving multiple decks from one.
+
+The probability of a mistake increases with the cards generated from a deck
+state.  It may make sense to reset the deck state between messages, and to
+send a prefix specifying how the deck was permuted.
+
+For example, you could find two random cards and put them on the top of the top
+of the deck, and transmit those two cards as a prefix.  Before using the deck,
+you could randomize it with 26 card generation operations.
+
 ## Examples
 
 Make sure you agree with the following before and after states when using this
