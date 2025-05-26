@@ -260,7 +260,7 @@ attacker no longer has statistically useful information about card positions,
 depending on how we define "useful".  After 26 cards, no card position is known
 with better than a few percent probability.
 
-## Operating the system
+## Operating tips
 
 ### Do everything the same way on both sides
 
