@@ -35,9 +35,7 @@ more secure schemes exist, e.g. AEAD schemes such as AES-GCM.
 
 That leaves the case where a person does not want to get caught with a
 one-time-pad, as this would be incriminating, and for some reason, they won't
-have access to air-gapped computers when they need to encrypt a message.  If
-all you want to do is sneak a secret key past a checkpoint, you can use a deck
-of cards as the key, and use a computer to extract a key from the deck order.
+have access to air-gapped computers when they need to encrypt a message.
 
 The most useful case is probably when using a time machine to go back to when
 computers did not exist.  Or maybe in a dystopian future after our machines
