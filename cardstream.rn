@@ -88,7 +88,6 @@ unittest computeNextCardProbabilities {
   deck = Deck(numCards)
   deck.shuffle()
   numVals = 200_000_000
-  randVal = 0
   countsTable = arrayof(u32)
   countsTable.resize(numCards)
   hitsTable = arrayof([u32])
