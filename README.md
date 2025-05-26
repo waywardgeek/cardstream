@@ -51,7 +51,7 @@ maybe a thousand letters.
 
 ### Encryption
 
-Assign A = 0, B = 1, ... , Z = 25.  Simply add the values of the letter of
+Assign A = 1, B = 2, ... , Z = 26.  Simply add the values of the letter of
 plaintext to the corresponding letter from the one-time-pad, wrapping around
 such that Z + A = A, and Y + C = B.  Be sure to use the letter from the
 one-time-pad only once, ever, or security for the encrypted messages is lost.
@@ -59,7 +59,38 @@ one-time-pad only once, ever, or security for the encrypted messages is lost.
 ```
 One-time-pad: IVEH
 Message     : LOVE
-Cyphertext  : TJZL
+Cyphertext  : UKAM
+```
+
+The table for value to letter to card is:
+
+```
+1 A BA
+2 B B2
+3 C B3
+4 D B4
+5 E B5
+6 F B6
+7 G B7
+8 H B8
+9 I B9
+10 J B10
+11 K BJ
+12 L BQ
+13 M BK
+14 N RA
+15 O R2
+16 P R3
+17 Q R4
+18 R R5
+19 S R6
+20 T R7
+21 U R8
+22 V R9
+23 W R10
+24 X RJ
+25 Y RQ
+26 Z RK
 ```
 
 ### Decryption
