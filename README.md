@@ -28,8 +28,8 @@ having enough randomness to be useful for encrypting short messages.
 When a one-time-pad is practical, it should be used rather than this scheme.
 This scheme is really only good for a total of messages that have a short
 combined length, such as might fit on a few sheets of paper.  If there is no
-harm in being caught with a sheet of random characters, then a one-time-pad is
-clearly preferred.
+harm in being caught with a few sheets of random characters, then a
+one-time-pad is clearly preferred.
 
 This scheme should also never be used for computers to communicate, since far
 more secure schemes exist, e.g. AEAD schemes such as AES-GCM.
@@ -37,6 +37,8 @@ more secure schemes exist, e.g. AEAD schemes such as AES-GCM.
 That leaves the case where a person does not want to get caught with a
 one-time-pad, as this would be incriminating, and for some reason, they won't
 have access to air-gapped computers when they need to encrypt a message.
+Several spys in World War II were convicted in part because they were caught
+with one-time-pad data.
 
 The most useful case is probably when using a time machine to go back to when
 computers did not exist.  Or maybe in a dystopian future after our machines
