@@ -68,7 +68,9 @@ same random order.  This order is the secret key.
 
 A full deck is less weird than a half deck. so 2 separate keys can be encoded.
 If he first half-deck gets out of sync due to a mistake, they can switch to the
-second.
+second.  Simply shuffle a first deck, and sort a second in the exact same
+order.  Two half decs are extracted by putting all clubs and diomonds in one
+deck and spades and hearts in the other.
 
 ### Setup
 
@@ -260,18 +262,6 @@ with better than a few percent probability.
 
 ## Operating the system
 
-### Checkpoint security
-
-You want a shuffled 52 card deck if anyone is going to look at your
-possessions.  So, just take a shuffled deck with you, and leave an identically
-shuffled deck with the person you need to send secret messages.
-
-This encodes 2 26-card decks.  Just separate the cards into two piles, one with
-clubs and diamonds, and the other with spades and hearts.  If one deck is
-accidentally scrambled, the other can still be used.
-
-Be careful not to reverse the card order when separating them.
-
 ### Do everything the same way on both sides
 
 Agree on how to put down the cards.  I put the cards face-down in my hand, and
@@ -299,6 +289,8 @@ of the deck.  To avoid critical mistakes:
 
 I prefer to have all the cards face-up with both decks so I can spot an error
 quickly.  I encode the current position by having that card face down.
+
+![My daughter's cat Slinky.](images/slinky.jpg)
 
 ### Practice
 
