@@ -27,8 +27,8 @@ having enough randomness to be useful for encrypting short messages.
 
 When a one-time-pad is practical, it should be used rather than this scheme.
 This scheme is really only good for a total of messages that have a short
-combined length, such as might fit on one sheet of paper.  If there is no harm
-in being caught with a sheet of random characters, then a one-time-pad is
+combined length, such as might fit on a few sheets of paper.  If there is no
+harm in being caught with a sheet of random characters, then a one-time-pad is
 clearly preferred.
 
 This scheme should also never be used for computers to communicate, since far
