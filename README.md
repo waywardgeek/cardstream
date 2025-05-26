@@ -258,3 +258,114 @@ reveal the position of an unknown card.  After 26 to 260 cards are output, the
 attacker no longer has statistically useful information about card positions,
 depending on how we define "useful".  After 26 cards, no card position is known
 with better than a few percent probability.
+
+## Operating the system
+
+### Checkpoint security
+
+You want a shuffled 52 card deck if anyone is going to look at your
+possessions.  So, just take a shuffled deck with you, and leave an identically
+shuffled deck with the person you need to send secret messages.
+
+This encodes 2 26-card decks.  Just separate the cards into two piles, one with
+clubs and diamonds, and the other with spades and hearts.  If one deck is
+accidentally scrambled, the other can still be used.
+
+Be careful not to reverse the card order when separating them.
+
+### Do everything the same way on both sides
+
+Agree on how to put down the cards.  I put the cards face-down in my hand, and
+then place 13 cards face-up from the top of the deck from left to right,
+followed by another row below that, left to right.
+
+I start with the current position as the lower left card, in position 0/
+Position 12 is the bottom right, position 13 is the upper left, and position 25
+is the upper right.  I find it more natural to place the second row below the
+first.
+
+Always compute target cards relative to the current position.  With a black 4,
+I count one, two, three, four, starting with the current position, and moving
+right.  If I hit the end, I start at the other row on the left.
+
+### Double check everything
+
+It is very easy to make a mistake, destroying both the key stream and the state
+of the deck.  To avoid critical mistakes:
+
+1) Lock your cat out of your room while you do this.
+2) Write down the deck's initial order so you can recover if needed.
+3) Have 2 decks, face-up in front of you, in the same order, and make sure they stay the same.
+4) Do every operation twice, once on the first deck, then on the second.
+
+I prefer to have all the cards face-up with both decks so I can spot an error
+quickly.  I encode the current position by having that card face down.
+
+### Practice
+
+Both parties must be very comfortable with this system before they start.
+
+## Examples
+
+Make sure you agree with the following before and after states when using this
+system.
+
+Skip the black ace.  If the card in the current position is the black ace, do
+not record it in the output stream, and increment the current position.
+
+```
+XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
+XXX XXX XXX XXX *BA R3  XXX XXX XXX XXX XXX XXX XXX
+==> Output nothing.
+XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
+XXX XXX XXX XXX BA  *R3 XXX XXX XXX XXX XXX XXX XXX
+```
+The R3 is just an example of whatever follows the black ace.  The \* means the
+current position.
+
+If the second card is a black ace, record the card in the current position in
+the output stream, and increment the position without any card rotation.
+
+```
+XXX XXX XXX XXX XXX XXX XXX XXX XXX BA  XXX XXX XXX
+XXX XXX XXX XXX B4  *R5 BK  XXX XXX XXX XXX XXX XXX
+==> Output R5, no rotation.
+XXX XXX XXX XXX XXX XXX XXX XXX XXX BA  XXX XXX XXX
+XXX XXX XXX XXX XXX R5  *BK XXX XXX XXX XXX XXX XXX
+```
+
+The red king is just one left of the current position.  The black king is one
+left of the current position in the other row.
+
+```
+XXX XXX XXX XXX BA  XXX XXX XXX XXX XXX XXX XXX XXX
+XXX XXX XXX XXX BK  *RK RJ  XXX XXX XXX XXX XXX XXX
+==> Output BA, and rotate.
+XXX XXX XXX XXX RK  XXX XXX XXX XXX XXX XXX XXX XXX
+XXX XXX XXX XXX BA  BK  *RJ XXX XXX XXX XXX XXX XXX
+```
+
+Note that the output card is never rotated into the current position.  That
+would give away too much information.
+
+Overflowing while counting past the end of a row starts on the other row.
+
+```
+XXX B2  XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
+XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX *B4 RA
+==> Output RA, and rotate.
+XXX RA  XXX XXX RK  XXX XXX XXX XXX XXX XXX XXX XXX
+XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX B2  *B4
+```
+
+Counting backwards wraps the same way.  I count backwards from the current
+position for red face cards, and backwards on the other row for black face
+cards.
+
+```
+*RK R3  XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX B5
+XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX BK
+==> Output B5, and rotate.
+BK  *R3 XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX RK
+XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX B5
+```
