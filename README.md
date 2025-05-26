@@ -40,8 +40,7 @@ one-time-pad, as this would be incriminating.
 
 The purpose of the half-deck of cards shared between two people is to enable
 them to create a one-time-pad of nearly random letters, from A to Z, up to
-maybe a thousand letters.  As many random letters as desired can be computed
-before hand, assuming the paper where they are written can be securely stored.
+maybe a thousand letters.
 
 ### Encryption
 
