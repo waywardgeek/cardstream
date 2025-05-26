@@ -346,9 +346,9 @@ The probability of a mistake increases with the cards generated from a deck
 state.  It may make sense to reset the deck state between messages, and to
 send a prefix specifying how the deck was permuted.
 
-For example, you could find two random cards and put them on the top of the top
-of the deck, and transmit those two cards as a prefix.  Before using the deck,
-you could randomize it with 26 card generation operations.
+For example, you could find two random cards and put them on top of deck, and
+prepend those two cards to the message.  Before using the deck, you could
+randomize it with 26 card generation operations.
 
 ## Examples
 
