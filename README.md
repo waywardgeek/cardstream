@@ -125,13 +125,14 @@ position to select the card two spots to the right of the current position.
 
 To produce a card in the key stream:
 
-1) If the card in the current position is the black ace, increment the position
-and repeats step 1.
+1) If the card in the current position is the black ace, increment the current
+position and repeats step 1.
 2) Flip over the target card of the first card to find the second card.
 3) Flip over the target card of the second card to find the third card, which
 can be the same as the first card, if the second card is the black ace.
 4) Add the 3rd card to the output key stream.
 5) If the 3rd card is not the same as the first, then "rotate" the 3 face-up cards.
+6) Increment the current position.
 
 To rotate 3 cards, the first card moves to the third card's position, the
 second card moves to the first card's position, and the third card moves to the
